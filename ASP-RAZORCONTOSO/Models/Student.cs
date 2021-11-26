@@ -7,22 +7,19 @@ using System.Threading.Tasks;
 
 namespace ASP_RAZORCONTOSO.Models
 {
-    public class Student
+    public class Student : Person
     {
-        public int StudentID { get; set; }
-        [DisplayName("Last Name"), Required, StringLength(20)]
-        public string LastName { get; set; }
-        [DisplayName("First Name"), Required, StringLength(20)]
-        public string FirstName { get; set; }
+        [StringLength(8), RegularExpression("[1-9]{8}")]
+        public string UniversityID { get; set; }
+
         [DisplayName("Enrol Date"), DataType(DataType.Date)]
         public DateTime EnrollmentDate { get; set; }
+
+        public int EnrollmentID { get; set; }
         
         //Relationship or navigation properties
         public virtual ICollection<Enrollment> Enrollments { get; set; }
-        public string FullName()
-        {
-            return FirstName + " " + LastName;
-        }
+       
     }
     }
 

@@ -29,7 +29,7 @@ namespace ASP_RAZORCONTOSO.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.StudentID == id);
+            Student = await _context.Students.FirstOrDefaultAsync(m => m.PersonID == id);
 
             if (Student == null)
             {

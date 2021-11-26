@@ -30,7 +30,7 @@ namespace ASP_RAZORCONTOSO.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.StudentID == id);
+            Student = await _context.Students.FirstOrDefaultAsync(m => m.PersonID == id);
 
             if (Student == null)
             {
@@ -56,7 +56,7 @@ namespace ASP_RAZORCONTOSO.Pages.Students
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(Student.StudentID))
+                if (!StudentExists(Student.PersonID))
                 {
                     return NotFound();
                 }
@@ -71,7 +71,7 @@ namespace ASP_RAZORCONTOSO.Pages.Students
 
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.StudentID == id);
+            return _context.Students.Any(e => e.PersonID == id);
         }
     }
 }

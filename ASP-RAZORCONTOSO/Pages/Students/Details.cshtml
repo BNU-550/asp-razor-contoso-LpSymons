@@ -2,15 +2,39 @@
 @model ASP_RAZORCONTOSO.Pages.Students.DetailsModel
 
 @{
-    ViewData["Title"] = "Student Details";
+    ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Student.FullName() Module Results</h1>
+<h1>Details</h1>
 
 <div>
-    <h4>Student Details</h4>
+    <h4>Student</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student.UniversityID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Student.UniversityID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student.EnrollmentDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Student.EnrollmentDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student.EnrollmentID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Student.EnrollmentID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student.UserID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Student.UserID)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Student.LastName)
         </dt>
@@ -23,37 +47,9 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Student.FirstName)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student.EnrollmentDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Student.EnrollmentDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student.Enrollments)
-        </dt>
-        <dd class="col-sm-5">
-            <table class="table table-bordered table-striped table-hover">
-                <tr class="bg-info">
-                    <th>Module Title</th>
-                    <th>Grade</th>
-                </tr>
-                @foreach (var item in Model.Student.Enrollments)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Grade)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </dd>
     </dl>
 </div>
 <div>
-    <a class="btn btn-primary"asp-page="./Index">&lt;Back To List</a>
-    <a class="btn btn-success"asp-page="./Edit" asp-route-id="@Model.Student.StudentID">&lt;Edit</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Student.PersonID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
 </div>

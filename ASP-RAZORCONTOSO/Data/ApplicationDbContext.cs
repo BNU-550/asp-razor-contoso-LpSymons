@@ -14,8 +14,11 @@ namespace ASP_RAZORCONTOSO.Data
         {
         }
 
+        public DbSet<Tutor> Tutors { get; set; }
+        public DbSet<Person> People { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Module> Modules { get; set; }
     }
 }

@@ -14,8 +14,8 @@ namespace ASP_RAZORCONTOSO.Models
 
     public class Enrollment
     {
-        public int EnrollmentID { get; set; }
-        public int CourseID { get; set; }
+        public string EnrollmentID { get; set; }
+        public string CourseID { get; set; }
         public int StudentID { get; set; }
 
         [DisplayFormat(NullDisplayText = "No Grade")]

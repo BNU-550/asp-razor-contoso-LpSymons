@@ -4,36 +4,34 @@ using ASP_RAZORCONTOSO.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ASP_RAZORCONTOSO.Data.Migrations
+namespace ASP_RAZORCONTOSO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211103070225_AnnotateStudent")]
-    partial class AnnotateStudent
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Course", b =>
                 {
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CourseCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CourseID")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<int>("Credits")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("CourseID");
 
@@ -42,13 +40,11 @@ namespace ASP_RAZORCONTOSO.Data.Migrations
 
             modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Enrollment", b =>
                 {
-                    b.Property<int>("EnrollmentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("EnrollmentID")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
+                    b.Property<string>("CourseID")
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<int?>("Grade")
                         .HasColumnType("int");
@@ -65,15 +61,39 @@ namespace ASP_RAZORCONTOSO.Data.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Student", b =>
+            modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Module", b =>
                 {
-                    b.Property<int>("StudentID")
+                    b.Property<string>("ModuleID")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<int>("Credit")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("ModuleID");
+
+                    b.ToTable("Modules");
+                });
+
+            modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Person", b =>
+                {
+                    b.Property<int>("PersonID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("EnrollmentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -85,9 +105,30 @@ namespace ASP_RAZORCONTOSO.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("StudentID");
+                    b.Property<string>("UserID")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.ToTable("Students");
+                    b.HasKey("PersonID");
+
+                    b.ToTable("People");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("CourseModule", b =>
+                {
+                    b.Property<string>("CoursesCourseID")
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("ModulesModuleID")
+                        .HasColumnType("nvarchar(6)");
+
+                    b.HasKey("CoursesCourseID", "ModulesModuleID");
+
+                    b.HasIndex("ModulesModuleID");
+
+                    b.ToTable("CourseModule");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -290,13 +331,42 @@ namespace ASP_RAZORCONTOSO.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Student", b =>
+                {
+                    b.HasBaseType("ASP_RAZORCONTOSO.Models.Person");
+
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EnrollmentID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UniversityID")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.HasDiscriminator().HasValue("Student");
+                });
+
+            modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Tutor", b =>
+                {
+                    b.HasBaseType("ASP_RAZORCONTOSO.Models.Person");
+
+                    b.Property<string>("Degree")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("money");
+
+                    b.HasDiscriminator().HasValue("Tutor");
+                });
+
             modelBuilder.Entity("ASP_RAZORCONTOSO.Models.Enrollment", b =>
                 {
                     b.HasOne("ASP_RAZORCONTOSO.Models.Course", "Course")
                         .WithMany("Enrollments")
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseID");
 
                     b.HasOne("ASP_RAZORCONTOSO.Models.Student", "Student")
                         .WithMany("Enrollments")
@@ -307,6 +377,21 @@ namespace ASP_RAZORCONTOSO.Data.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("CourseModule", b =>
+                {
+                    b.HasOne("ASP_RAZORCONTOSO.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesCourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ASP_RAZORCONTOSO.Models.Module", null)
+                        .WithMany()
+                        .HasForeignKey("ModulesModuleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
