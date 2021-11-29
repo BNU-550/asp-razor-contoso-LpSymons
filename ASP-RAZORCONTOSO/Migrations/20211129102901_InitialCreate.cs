@@ -86,7 +86,7 @@ namespace ASP_RAZORCONTOSO.Migrations
                     UniversityID = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
                     EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EnrollmentID = table.Column<int>(type: "int", nullable: true),
-                    Degree = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Degree = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Salary = table.Column<decimal>(type: "money", nullable: true)
                 },
                 constraints: table =>

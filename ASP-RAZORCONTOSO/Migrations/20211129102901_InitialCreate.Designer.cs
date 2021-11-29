@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP_RAZORCONTOSO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211126034631_IncreasedStringLength")]
-    partial class IncreasedStringLength
+    [Migration("20211129102901_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
